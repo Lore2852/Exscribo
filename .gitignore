@@ -1,0 +1,26 @@
+# --- Segreti e configurazione personale ---
+# Il file .env contiene le TUE impostazioni (ed eventuali chiavi): non va mai su GitHub.
+.env
+
+# --- Documenti personali ---
+# I tuoi PDF vanno in documenti/: la cartella resta nel progetto (grazie a .gitkeep)
+# ma il suo contenuto viene ignorato.
+documenti/*
+!documenti/.gitkeep
+
+# Doppia protezione: ignora QUALSIASI PDF, ovunque si trovi...
+*.pdf
+# ...tranne i PDF di esempio, che sono pubblici e servono a chi prova l'app.
+!esempi/*.pdf
+
+# --- Indice generato dai PDF ---
+# Conterrà pezzi di testo dei tuoi appunti: è personale quanto i PDF stessi.
+indice/
+
+# --- Ambiente Python ---
+.venv/
+__pycache__/
+*.pyc
+
+# --- File di sistema del Mac ---
+.DS_Store

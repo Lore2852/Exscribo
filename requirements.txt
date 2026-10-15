@@ -1,0 +1,4 @@
+# Librerie Python del progetto.
+# Si installano con:  pip install -r requirements.txt
+# Per ora è vuoto: aggiungeremo ogni libreria nel passo in cui serve,
+# così è sempre chiaro a cosa serve ciascuna.
