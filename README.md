@@ -41,22 +41,43 @@ pip install -r requirements.txt
 # 4. Crea il file di configurazione
 cp .env.example .env
 
-# 5. Scarica il modello linguistico (vedi .env per la scelta in base alla RAM)
-ollama pull qwen2.5:3b
+# 5. Scarica i modelli (vedi .env per la scelta in base alla RAM)
+ollama pull qwen2.5:3b   # scrive le risposte
+ollama pull bge-m3       # trova i brani pertinenti
 
 # 6. Controlla che sia tutto a posto
 python verifica_ambiente.py
+```
+
+## Uso
+
+```bash
+# Sessione interattiva: fai tutte le domande che vuoi
+python chiedi.py esempi/appunti_biologia.pdf
+
+# Una sola domanda
+python chiedi.py esempi/appunti_biologia.pdf "Quali sono le fasi della mitosi?"
+
+# Mostra anche i brani trovati e il loro punteggio di somiglianza
+python chiedi.py esempi/appunti_biologia.pdf --debug
 ```
 
 ## Struttura del progetto
 
 ```
 exscribo/
+├── exscribo/             # il codice dell'app
+│   ├── config.py         #   legge la configurazione (.env)
+│   ├── pdf.py            #   estrae il testo dai PDF e lo divide in brani
+│   ├── modelli.py        #   parla con Ollama (embedding e risposte)
+│   ├── ricerca.py        #   trova i brani più simili alla domanda
+│   └── rag.py            #   mette insieme ricerca e risposta
+├── esempi/               # PDF di esempio (contenuto inventato, pubblico)
 ├── documenti/            # i TUOI PDF (esclusi da Git)
-├── .env.example          # modello di configurazione (copialo in .env)
-├── requirements.txt      # librerie Python necessarie
+├── chiedi.py             # interfaccia da Terminale
 ├── verifica_ambiente.py  # controlla che l'ambiente sia pronto
-└── README.md
+├── .env.example          # modello di configurazione (copialo in .env)
+└── requirements.txt      # librerie Python necessarie
 ```
 
 ## Privacy

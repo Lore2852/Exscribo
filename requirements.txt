@@ -1,4 +1,5 @@
 # Librerie Python del progetto.
 # Si installano con:  pip install -r requirements.txt
-# Per ora è vuoto: aggiungeremo ogni libreria nel passo in cui serve,
-# così è sempre chiaro a cosa serve ciascuna.
+
+pypdf>=5.0    # legge il testo dai file PDF
+numpy>=1.26   # calcoli veloci sui vettori (per la ricerca dei brani)
