@@ -24,3 +24,6 @@ __pycache__/
 
 # --- File di sistema del Mac ---
 .DS_Store
+
+# --- Eventuali segreti di Streamlit ---
+.streamlit/secrets.toml

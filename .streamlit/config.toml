@@ -1,0 +1,18 @@
+# Configurazione di Streamlit per Exscribo.
+
+[server]
+# Rende la pagina raggiungibile SOLO da questo computer.
+# Senza questa riga, chiunque sulla stessa rete Wi-Fi potrebbe aprirla.
+address = "localhost"
+port = 8501
+# Dimensione massima di un PDF caricato, in MB
+maxUploadSize = 50
+
+[browser]
+# Non inviare statistiche d'uso anonime agli sviluppatori di Streamlit.
+gatherUsageStats = false
+
+[client]
+# Nasconde il pulsante "Deploy" (pubblicherebbe l'app su internet)
+# e le opzioni per sviluppatori nel menu.
+toolbarMode = "minimal"

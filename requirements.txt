@@ -3,3 +3,4 @@
 
 pypdf>=5.0    # legge il testo dai file PDF
 numpy>=1.26   # calcoli veloci sui vettori (per la ricerca dei brani)
+streamlit>=1.40  # interfaccia web locale

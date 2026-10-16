@@ -49,7 +49,24 @@ ollama pull bge-m3       # trova i brani pertinenti
 python verifica_ambiente.py
 ```
 
-## Uso
+## Interfaccia web
+
+```bash
+streamlit run app.py
+```
+
+Si apre il browser su `http://localhost:8501`. Dalla barra laterale puoi caricare
+nuovi PDF (vengono salvati in `documenti/`), scegliere in quali cartelle cercare
+e attivare la modalità debug. Cliccando su una fonte si legge l'estratto esatto
+da cui viene la risposta.
+
+L'app gira **solo sul tuo computer**: la configurazione in `.streamlit/config.toml`
+la rende raggiungibile solo da `localhost`, disattiva le statistiche d'uso di
+Streamlit e nasconde il pulsante per pubblicarla online. Avviala dalla cartella
+del progetto, altrimenti questa configurazione non viene letta.
+Per fermarla, premi `Ctrl+C` nel Terminale.
+
+## Uso da Terminale
 
 ```bash
 # Tutti i PDF di una cartella (anche nelle sottocartelle)
@@ -114,7 +131,9 @@ exscribo/
 ├── esempi/               # PDF di esempio (contenuto inventato, pubblico)
 ├── indice/               # embedding salvati (generata, esclusa da Git)
 ├── documenti/            # i TUOI PDF (esclusi da Git)
+├── app.py                # interfaccia web (Streamlit)
 ├── chiedi.py             # interfaccia da Terminale
+├── .streamlit/           # configurazione dell'interfaccia web
 ├── verifica_ambiente.py  # controlla che l'ambiente sia pronto
 ├── .env.example          # modello di configurazione (copialo in .env)
 └── requirements.txt      # librerie Python necessarie
