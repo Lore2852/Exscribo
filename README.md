@@ -116,6 +116,24 @@ Se la risposta non è negli appunti, l'app risponde sempre
 
 Con `--debug` l'app mostra quale controllo è scattato e cosa aveva scritto il modello.
 
+## Valutazione
+
+Per misurare quanto spesso l'app sbaglia c'è un insieme di 15 domande di prova sui
+PDF di esempio (`valutazione/domande.json`): 9 con risposta negli appunti e 6 senza,
+di cui 3 completamente fuori tema e 3 sullo stesso argomento ma senza risposta
+(le più insidiose). Per ogni domanda sono indicate le pagine da citare e le
+parole che la risposta deve contenere.
+
+```bash
+python valuta.py
+```
+
+Lo script classifica ogni risposta (corretta, falso "non trovato", fonte sbagliata,
+risposta incompleta, **invenzione**) e confronta diverse soglie di pertinenza.
+Il modello viene interrogato una sola volta per domanda: l'effetto delle soglie
+viene simulato, perché la soglia decide solo *se* chiamare il modello.
+I risultati vengono salvati in `valutazione/risultati.md`.
+
 ## Struttura del progetto
 
 ```
@@ -133,6 +151,8 @@ exscribo/
 ├── documenti/            # i TUOI PDF (esclusi da Git)
 ├── app.py                # interfaccia web (Streamlit)
 ├── chiedi.py             # interfaccia da Terminale
+├── valuta.py             # misura gli errori sulle domande di prova
+├── valutazione/          # domande di prova e risultati
 ├── .streamlit/           # configurazione dell'interfaccia web
 ├── verifica_ambiente.py  # controlla che l'ambiente sia pronto
 ├── .env.example          # modello di configurazione (copialo in .env)

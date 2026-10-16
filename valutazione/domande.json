@@ -1,0 +1,102 @@
+{
+  "descrizione": "15 domande di prova sui PDF di esempio: 9 con risposta negli appunti, 6 senza.",
+  "documenti": ["esempi/"],
+  "domande": [
+    {
+      "domanda": "Quali sono le fasi della mitosi?",
+      "tipo": "diretta",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_biologia.pdf", "pagina": 5}],
+      "parole": [["profase"], ["metafase"], ["anafase"], ["telofase"]]
+    },
+    {
+      "domanda": "Quante molecole di ATP si ottengono da una molecola di glucosio?",
+      "tipo": "diretta",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_biologia.pdf", "pagina": 4}],
+      "parole": [["36"]]
+    },
+    {
+      "domanda": "Chi osservò per primo le cellule al microscopio?",
+      "tipo": "diretta",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_biologia.pdf", "pagina": 1}],
+      "parole": [["Hooke"]]
+    },
+    {
+      "domanda": "Che cosa ha la cellula vegetale che manca a quella animale?",
+      "tipo": "riformulata",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_biologia.pdf", "pagina": 2}],
+      "parole": [["parete"], ["cloroplast"]]
+    },
+    {
+      "domanda": "Perché la meiosi aumenta la variabilità genetica?",
+      "tipo": "riformulata",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_biologia.pdf", "pagina": 6}],
+      "parole": [["crossing"]]
+    },
+    {
+      "domanda": "Chi guidò la spedizione dei Mille?",
+      "tipo": "diretta",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_storia.pdf", "pagina": 4}],
+      "parole": [["Garibaldi"]]
+    },
+    {
+      "domanda": "In che data fu proclamato il Regno d'Italia?",
+      "tipo": "diretta",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_storia.pdf", "pagina": 5}],
+      "parole": [["1861"]]
+    },
+    {
+      "domanda": "Cosa ottenne il Regno di Sardegna con l'armistizio di Villafranca?",
+      "tipo": "diretta",
+      "risposta_attesa": true,
+      "fonti": [{"file": "appunti_storia.pdf", "pagina": 3}],
+      "parole": [["Lombardia"]]
+    },
+    {
+      "domanda": "Chi formulò la teoria cellulare e chi fondò la Giovine Italia?",
+      "tipo": "due file",
+      "risposta_attesa": true,
+      "fonti": [
+        {"file": "appunti_biologia.pdf", "pagina": 1},
+        {"file": "appunti_storia.pdf", "pagina": 1}
+      ],
+      "parole": [["Schleiden", "Schwann"], ["Mazzini"]]
+    },
+    {
+      "domanda": "Chi ha vinto i mondiali di calcio del 2006?",
+      "tipo": "fuori tema",
+      "risposta_attesa": false
+    },
+    {
+      "domanda": "Qual è la capitale dell'Australia?",
+      "tipo": "fuori tema",
+      "risposta_attesa": false
+    },
+    {
+      "domanda": "Come si calcola la derivata di una funzione?",
+      "tipo": "fuori tema",
+      "risposta_attesa": false
+    },
+    {
+      "domanda": "A cosa serve il reticolo endoplasmatico?",
+      "tipo": "in tema, senza risposta",
+      "risposta_attesa": false
+    },
+    {
+      "domanda": "Qual è l'equazione della fotosintesi?",
+      "tipo": "in tema, senza risposta",
+      "risposta_attesa": false
+    },
+    {
+      "domanda": "In che anno morì Giuseppe Garibaldi?",
+      "tipo": "in tema, senza risposta",
+      "risposta_attesa": false
+    }
+  ]
+}
