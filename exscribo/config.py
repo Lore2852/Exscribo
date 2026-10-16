@@ -40,11 +40,11 @@ def carica_config() -> Config:
     def valore(chiave: str, predefinito: str) -> str:
         return os.environ.get(chiave) or env.get(chiave) or predefinito
 
-    testo_soglia = valore("SOGLIA_PERTINENZA", "0.5")
+    testo_soglia = valore("SOGLIA_PERTINENZA", "0.4")
     try:
         soglia = float(testo_soglia)
     except ValueError:
-        raise ValueError(f"SOGLIA_PERTINENZA deve essere un numero (es. 0.5), non '{testo_soglia}'") from None
+        raise ValueError(f"SOGLIA_PERTINENZA deve essere un numero (es. 0.4), non '{testo_soglia}'") from None
 
     return Config(
         ollama_url=valore("OLLAMA_URL", "http://localhost:11434").rstrip("/"),

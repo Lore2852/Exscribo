@@ -77,7 +77,8 @@ def conteggi_giusti(conteggi: dict[str, int]) -> list[int]:
     return [n for esito, n in conteggi.items() if esito in ESITI_GIUSTI]
 
 
-def scrivi_rapporto(percorso, config, pdf, risultati, soglie, riepiloghi, consigliata, durata) -> None:
+def scrivi_rapporto(percorso, config, pdf, risultati, soglie, riepiloghi, migliore, durata) -> None:
+    in_uso = config.soglia_pertinenza
     totale = len(risultati)
     righe = [
         "# Risultati della valutazione",
@@ -93,6 +94,8 @@ def scrivi_rapporto(percorso, config, pdf, risultati, soglie, riepiloghi, consig
         "## Riepilogo per soglia di pertinenza",
         "",
         "La soglia è il punteggio minimo del brano più pertinente perché la domanda venga passata al modello.",
+        "«Migliore sul test» è calcolata automaticamente: più risposte giuste senza invenzioni e, a parità,",
+        "la soglia più alta. «In uso» è la soglia scelta nel file `.env`.",
         "",
         "| Soglia | Risposte giuste | Invenzioni | Falsi \"non trovato\" | Fonte sbagliata | Risposta incompleta |",
         "|---|---|---|---|---|---|",
@@ -100,7 +103,7 @@ def scrivi_rapporto(percorso, config, pdf, risultati, soglie, riepiloghi, consig
     for soglia in soglie:
         c = riepiloghi[soglia]
         giuste = sum(conteggi_giusti(c))
-        segno = " ⬅ consigliata" if soglia == consigliata else ""
+        segno = (" ⬅ migliore sul test" if soglia == migliore else "") + (" (in uso)" if soglia == in_uso else "")
         righe.append(
             f"| {soglia}{segno} | **{giuste}/{totale}** | {c.get(INVENZIONE, 0)} | {c.get(FALSO_NON_TROVATO, 0)} "
             f"| {c.get(FONTE_SBAGLIATA, 0)} | {c.get(RISPOSTA_INCOMPLETA, 0)} |"
@@ -108,14 +111,14 @@ def scrivi_rapporto(percorso, config, pdf, risultati, soglie, riepiloghi, consig
 
     righe += [
         "",
-        f"## Dettaglio delle domande (con la soglia consigliata: {consigliata})",
+        f"## Dettaglio delle domande (con la soglia in uso: {in_uso})",
         "",
         "| # | Tipo | Domanda | Punteggio | Esito | Risposta dell'app |",
         "|---|---|---|---|---|---|",
     ]
     for numero, r in enumerate(risultati, start=1):
-        esito = classifica(r["attesa"], r["risposta"], r["punteggio"], consigliata)
-        trovata = r["risposta"].trovata and r["punteggio"] >= consigliata
+        esito = classifica(r["attesa"], r["risposta"], r["punteggio"], in_uso)
+        trovata = r["risposta"].trovata and r["punteggio"] >= in_uso
         testo = r["risposta"].testo if trovata else "Non l'ho trovato nei tuoi appunti."
         if trovata and r["risposta"].fonti:
             testo += " — " + "; ".join(f"{f.file} p.{f.pagina}" for f in r["risposta"].fonti)
@@ -175,13 +178,13 @@ def main() -> int:
             esito = classifica(r["attesa"], r["risposta"], r["punteggio"], soglia)
             conteggi[esito] = conteggi.get(esito, 0) + 1
         riepiloghi[soglia] = conteggi
-    consigliata = scegli_soglia(riepiloghi)
+    migliore = scegli_soglia(riepiloghi)
 
     print("\nSoglia | giuste | invenzioni | falsi 'non trovato' | fonte sbagliata | incomplete")
     for soglia in soglie:
         c = riepiloghi[soglia]
-        segno = "  <- consigliata" if soglia == consigliata else ""
-        attuale = "  (quella nel tuo .env)" if soglia == config.soglia_pertinenza else ""
+        segno = "  <- migliore sul test" if soglia == migliore else ""
+        attuale = "  (in uso, dal tuo .env)" if soglia == config.soglia_pertinenza else ""
         print(
             f" {soglia:<5} | {sum(conteggi_giusti(c)):>2}/{len(risultati)}  | {c.get(INVENZIONE, 0):>10} "
             f"| {c.get(FALSO_NON_TROVATO, 0):>19} | {c.get(FONTE_SBAGLIATA, 0):>15} "
@@ -189,7 +192,7 @@ def main() -> int:
         )
 
     args.uscita.parent.mkdir(parents=True, exist_ok=True)
-    scrivi_rapporto(args.uscita, config, pdf, risultati, soglie, riepiloghi, consigliata, durata)
+    scrivi_rapporto(args.uscita, config, pdf, risultati, soglie, riepiloghi, migliore, durata)
     print(f"\nRapporto completo salvato in {args.uscita}")
     return 0
 

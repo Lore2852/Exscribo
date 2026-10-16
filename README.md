@@ -134,6 +134,13 @@ Il modello viene interrogato una sola volta per domanda: l'effetto delle soglie
 viene simulato, perché la soglia decide solo *se* chiamare il modello.
 I risultati vengono salvati in `valutazione/risultati.md`.
 
+La soglia predefinita (0.4) è stata scelta così: sulle domande di prova tutte le
+soglie tra 0.3 e 0.5 davano zero invenzioni e lo stesso numero di risposte giuste,
+ma con 0.5 la domanda "a cavallo di due file" veniva scartata, mentre con 0.4
+riceveva una risposta parziale con la fonte. Inoltre sui PDF reali i punteggi
+tendono a essere più bassi che sugli esempi, quindi una soglia più bassa lascia
+più margine. Con sole 15 domande è una scelta ragionevole, non una certezza.
+
 ## Struttura del progetto
 
 ```
