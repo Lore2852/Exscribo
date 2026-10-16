@@ -230,6 +230,9 @@ Exscribo/
   con molti sinonimi può perdere la citazione.
 - **Risposte a volte parziali**: un modello da 3 miliardi di parametri tende a essere
   sbrigativo (per esempio cita il crossing-over ma non l'assortimento indipendente).
+- **Piccoli errori di scrittura**: il modello a volte storpia una parola (per esempio
+  "profaso" invece di "profase"); la verifica delle citazioni non se ne accorge, perché
+  confronta solo le prime lettere delle parole.
 - **Valutazione piccola**: 15 domande su due PDF di esempio scritti in modo ordinato.
   Su appunti reali i punteggi di somiglianza sono in genere più bassi.
 - **Brani divisi per pagina**: una frase a cavallo tra due pagine viene spezzata.

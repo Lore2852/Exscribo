@@ -20,9 +20,9 @@ from exscribo.rag import MESSAGGIO_NON_TROVATO, rispondi
 from exscribo.ricerca import Indice
 
 CARTELLA_DOCUMENTI = CARTELLA_PROGETTO / "documenti"
-ESEMPI = "Esempi (esempi/)"
+ESEMPI = "Esempi"
 CARTELLE = {
-    "I miei documenti (documenti/)": CARTELLA_DOCUMENTI,
+    "I miei documenti": CARTELLA_DOCUMENTI,
     ESEMPI: CARTELLA_PROGETTO / "esempi",
 }
 
@@ -82,14 +82,14 @@ def mostra_risposta(domanda: str, risposta, debug: bool) -> None:
         st.caption(f"Domanda: {domanda}")
 
         if not risposta.trovata:
-            st.markdown(f"#### 🔍 {MESSAGGIO_NON_TROVATO}")
+            st.markdown(f"🔍 **{MESSAGGIO_NON_TROVATO}**")
             st.caption("La risposta non è nei documenti selezionati, quindi non provo a indovinarla.")
             if debug:
                 st.caption(f"Motivo: {risposta.motivo}")
                 if risposta.testo_modello:
                     st.caption(f"Il modello aveva scritto: {risposta.testo_modello}")
         else:
-            st.markdown(f"##### {senza_link(risposta.testo)}")
+            st.markdown(f"**{senza_link(risposta.testo)}**")
             st.markdown("**Fonti** · clicca per leggere l'estratto")
             for fonte in risposta.fonti:
                 numeri = "".join(f"[{n}]" for n in fonte.estratti)
@@ -109,14 +109,22 @@ def mostra_risposta(domanda: str, risposta, debug: bool) -> None:
 with st.sidebar:
     st.header("📂 Documenti")
     caricati = st.file_uploader(
-        "Carica nuovi PDF (verranno salvati in documenti/)", type="pdf", accept_multiple_files=True
+        "Carica PDF",
+        type="pdf",
+        accept_multiple_files=True,
+        help="I file vengono salvati nella cartella documenti/, che resta solo sul tuo computer.",
     )
     if caricati:
         salva_caricati(caricati)
 
     # Di base selezioniamo le cartelle che contengono almeno un PDF
     con_pdf = [nome for nome, cartella in CARTELLE.items() if cartella.is_dir() and elenca_pdf([cartella])]
-    scelte = st.multiselect("Cerca in", list(CARTELLE), default=con_pdf)
+    scelte = st.multiselect(
+        "Cerca in",
+        list(CARTELLE),
+        default=con_pdf,
+        help="I miei documenti: la cartella documenti/. Esempi: i PDF dimostrativi in esempi/.",
+    )
     debug = st.toggle("Modalità debug", help="Mostra punteggi dei brani e motivi del 'non trovato'")
 
 try:
@@ -130,7 +138,7 @@ pdf = elenca_pdf([CARTELLE[nome] for nome in scelte if CARTELLE[nome].is_dir()])
 with st.sidebar:
     if pdf:
         st.caption(f"{len(pdf)} PDF selezionati")
-        st.markdown("\n".join(f"- 📄 {p.name}" for p in pdf))
+        st.markdown("\n".join(f"- {p.name}" for p in pdf))
 
 # --- Pagina principale ----------------------------------------------------
 
