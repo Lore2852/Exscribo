@@ -12,12 +12,7 @@ class Indice:
 
     def __init__(self, brani: list[Brano], vettori: np.ndarray):
         self.brani = brani
-        self.vettori = vettori
-
-    @classmethod
-    def costruisci(cls, brani: list[Brano], config: Config) -> "Indice":
-        vettori = calcola_embedding([brano.testo for brano in brani], config)
-        return cls(brani, vettori)
+        self.vettori = vettori  # una riga per brano, nello stesso ordine
 
     def cerca(self, domanda: str, config: Config, quanti: int = 4) -> list[tuple[Brano, float]]:
         """Restituisce i `quanti` brani più simili alla domanda, con il loro punteggio.

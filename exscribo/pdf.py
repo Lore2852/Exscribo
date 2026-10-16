@@ -6,6 +6,9 @@ from pathlib import Path
 
 from pypdf import PdfReader
 
+LUNGHEZZA_BRANO = 800  # caratteri massimi per brano
+SOVRAPPOSIZIONE = 150  # caratteri condivisi tra due brani consecutivi della stessa pagina
+
 
 @dataclass
 class Brano:
@@ -70,7 +73,9 @@ def dividi_testo(testo: str, lunghezza: int, sovrapposizione: int) -> list[str]:
     return pezzi
 
 
-def dividi_in_brani(percorso: Path, lunghezza: int = 800, sovrapposizione: int = 150) -> list[Brano]:
+def dividi_in_brani(
+    percorso: Path, lunghezza: int = LUNGHEZZA_BRANO, sovrapposizione: int = SOVRAPPOSIZIONE
+) -> list[Brano]:
     """Legge un PDF e lo divide in brani.
 
     Ogni brano appartiene a una sola pagina: così sapremo sempre

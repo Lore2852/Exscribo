@@ -52,15 +52,23 @@ python verifica_ambiente.py
 ## Uso
 
 ```bash
-# Sessione interattiva: fai tutte le domande che vuoi
-python chiedi.py esempi/appunti_biologia.pdf
+# Tutti i PDF di una cartella (anche nelle sottocartelle)
+python chiedi.py documenti/
+
+# Più cartelle e file insieme
+python chiedi.py documenti/ esempi/appunti_storia.pdf
 
 # Una sola domanda
-python chiedi.py esempi/appunti_biologia.pdf "Quali sono le fasi della mitosi?"
+python chiedi.py esempi/ "Chi guidò la spedizione dei Mille?"
 
 # Mostra anche i brani trovati e il loro punteggio di somiglianza
-python chiedi.py esempi/appunti_biologia.pdf --debug
+python chiedi.py esempi/ --debug
 ```
+
+La prima volta che legge un PDF, l'app calcola gli embedding e li salva nella
+cartella `indice/` (esclusa da Git). Le volte successive li rilegge da lì, e li
+ricalcola solo per i PDF nuovi o modificati. La cartella `indice/` si può
+cancellare in qualsiasi momento: verrà ricreata.
 
 Esempio di risposta:
 
@@ -97,12 +105,14 @@ Con `--debug` l'app mostra quale controllo è scattato e cosa aveva scritto il m
 exscribo/
 ├── exscribo/             # il codice dell'app
 │   ├── config.py         #   legge la configurazione (.env)
+│   ├── archivio.py       #   costruisce l'indice da più PDF e lo salva su disco
 │   ├── pdf.py            #   estrae il testo dai PDF e lo divide in brani
 │   ├── modelli.py        #   parla con Ollama (embedding e risposte)
 │   ├── ricerca.py        #   trova i brani più simili alla domanda
 │   ├── citazioni.py      #   verifica le citazioni e le trasforma in file e pagina
 │   └── rag.py            #   mette insieme ricerca e risposta
 ├── esempi/               # PDF di esempio (contenuto inventato, pubblico)
+├── indice/               # embedding salvati (generata, esclusa da Git)
 ├── documenti/            # i TUOI PDF (esclusi da Git)
 ├── chiedi.py             # interfaccia da Terminale
 ├── verifica_ambiente.py  # controlla che l'ambiente sia pronto
