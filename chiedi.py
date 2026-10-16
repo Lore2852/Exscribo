@@ -35,7 +35,7 @@ def stampa_risposta(domanda, indice, config, debug):
             print(f"  {numeri} {fonte.file}, pagina {fonte.pagina}")
     else:
         pagine = sorted({brano.pagina for brano, _ in risposta.brani})
-        print(f"\nFonti: nessuna citata dal modello (pagine consultate: {', '.join(map(str, pagine))})")
+        print(f"\nFonti: nessuna fonte verificata (pagine consultate: {', '.join(map(str, pagine))})")
 
 
 def main() -> int:

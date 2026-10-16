@@ -50,7 +50,7 @@ def sistema_citazioni(testo: str, quanti_estratti: int) -> str:
 
     testo = CITAZIONE.sub(sostituisci, testo)
     # Sposta prima del punto le citazioni messe dopo: "frase. [1]" -> "frase [1]."
-    testo = re.sub(r"([.!?])[ \t]*((?:\[\d{1,2}\])+)", r" \2\1", testo)
+    testo = re.sub(r"([.!?]+)[ \t]*((?:\[\d{1,2}\])+)", r" \2\1", testo)
     return pulisci_spazi(testo)
 
 
