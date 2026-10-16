@@ -77,6 +77,20 @@ Il programma inoltre verifica ogni citazione: se le parole chiave della frase no
 compaiono nell'estratto citato la scarta, e se una frase non ha citazioni
 cerca l'estratto che la contiene.
 
+## Quando la risposta non c'è
+
+Se la risposta non è negli appunti, l'app risponde sempre
+**"Non l'ho trovato nei tuoi appunti."** invece di inventare. Tre controlli, in ordine:
+
+1. **Pertinenza:** se nessun brano supera la soglia `SOGLIA_PERTINENZA` (nel `.env`),
+   la domanda è fuori tema e il modello non viene nemmeno interpellato.
+2. **Segnale del modello:** il modello è istruito a rispondere `NON_TROVATO` quando
+   gli estratti non contengono la risposta.
+3. **Verifica delle fonti:** se nessuna frase della risposta è supportata dagli
+   estratti, la risposta viene scartata.
+
+Con `--debug` l'app mostra quale controllo è scattato e cosa aveva scritto il modello.
+
 ## Struttura del progetto
 
 ```

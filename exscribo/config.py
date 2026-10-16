@@ -16,6 +16,7 @@ class Config:
     ollama_url: str
     modello_chat: str  # il modello che scrive le risposte
     modello_embedding: str  # il modello che trasforma i testi in vettori
+    soglia_pertinenza: float  # sotto questo punteggio i brani sono considerati "fuori tema"
 
 
 def leggi_env(percorso: Path) -> dict:
@@ -39,8 +40,15 @@ def carica_config() -> Config:
     def valore(chiave: str, predefinito: str) -> str:
         return os.environ.get(chiave) or env.get(chiave) or predefinito
 
+    testo_soglia = valore("SOGLIA_PERTINENZA", "0.5")
+    try:
+        soglia = float(testo_soglia)
+    except ValueError:
+        raise ValueError(f"SOGLIA_PERTINENZA deve essere un numero (es. 0.5), non '{testo_soglia}'") from None
+
     return Config(
         ollama_url=valore("OLLAMA_URL", "http://localhost:11434").rstrip("/"),
         modello_chat=valore("OLLAMA_MODEL", "qwen2.5:3b"),
         modello_embedding=valore("OLLAMA_EMBED_MODEL", "bge-m3"),
+        soglia_pertinenza=soglia,
     )

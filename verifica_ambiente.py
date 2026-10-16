@@ -74,8 +74,15 @@ def main() -> int:
         tutto_ok = False
         problema("Cartella documenti/ mancante", "esegui: mkdir documenti")
 
-    # 6. Ollama in esecuzione e modelli scaricati
-    config = carica_config()
+    # 6. Configurazione leggibile
+    try:
+        config = carica_config()
+    except ValueError as errore:
+        problema("Valore non valido nel file .env", str(errore))
+        print("\nSistema i punti [DA FARE] e rilancia questo script.")
+        return 1
+
+    # 7. Ollama in esecuzione e modelli scaricati
     try:
         # /api/tags restituisce l'elenco dei modelli già scaricati.
         with urllib.request.urlopen(f"{config.ollama_url}/api/tags", timeout=3) as risposta:
