@@ -73,6 +73,9 @@ Fonti:
 
 Il modello indica solo il numero dell'estratto usato (`[1]`); file e pagina
 vengono aggiunti dal programma, così non possono essere inventati.
+Il programma inoltre verifica ogni citazione: se le parole chiave della frase non
+compaiono nell'estratto citato la scarta, e se una frase non ha citazioni
+cerca l'estratto che la contiene.
 
 ## Struttura del progetto
 
@@ -83,6 +86,7 @@ exscribo/
 │   ├── pdf.py            #   estrae il testo dai PDF e lo divide in brani
 │   ├── modelli.py        #   parla con Ollama (embedding e risposte)
 │   ├── ricerca.py        #   trova i brani più simili alla domanda
+│   ├── citazioni.py      #   verifica le citazioni e le trasforma in file e pagina
 │   └── rag.py            #   mette insieme ricerca e risposta
 ├── esempi/               # PDF di esempio (contenuto inventato, pubblico)
 ├── documenti/            # i TUOI PDF (esclusi da Git)
