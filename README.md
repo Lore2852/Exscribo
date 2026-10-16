@@ -62,6 +62,18 @@ python chiedi.py esempi/appunti_biologia.pdf "Quali sono le fasi della mitosi?"
 python chiedi.py esempi/appunti_biologia.pdf --debug
 ```
 
+Esempio di risposta:
+
+```
+Le fasi della mitosi sono profase, metafase, anafase e telofase [1].
+
+Fonti:
+  [1] appunti_biologia.pdf, pagina 5
+```
+
+Il modello indica solo il numero dell'estratto usato (`[1]`); file e pagina
+vengono aggiunti dal programma, così non possono essere inventati.
+
 ## Struttura del progetto
 
 ```
