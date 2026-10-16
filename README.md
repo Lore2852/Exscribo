@@ -149,6 +149,7 @@ Si apre il browser su `http://localhost:8501`. Dalla barra laterale si caricano 
 (salvati in `documenti/`), si sceglie in quali cartelle cercare e si attiva la modalità
 debug, che mostra i punteggi dei brani e quale controllo ha fatto scattare un "non trovato".
 Cliccando su una fonte si legge l'estratto esatto da cui viene la risposta.
+Con i PDF di esempio selezionati, la pagina propone anche tre domande da provare con un clic.
 Va avviata dalla cartella del progetto, perché legga la sua configurazione.
 Per fermarla: `Ctrl+C` nel Terminale.
 

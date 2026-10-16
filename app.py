@@ -20,10 +20,18 @@ from exscribo.rag import MESSAGGIO_NON_TROVATO, rispondi
 from exscribo.ricerca import Indice
 
 CARTELLA_DOCUMENTI = CARTELLA_PROGETTO / "documenti"
+ESEMPI = "Esempi (esempi/)"
 CARTELLE = {
     "I miei documenti (documenti/)": CARTELLA_DOCUMENTI,
-    "Esempi (esempi/)": CARTELLA_PROGETTO / "esempi",
+    ESEMPI: CARTELLA_PROGETTO / "esempi",
 }
+
+# Domande cliccabili mostrate quando si cerca nei PDF di esempio
+DOMANDE_ESEMPIO = [
+    "Quali sono le fasi della mitosi?",
+    "Chi guidò la spedizione dei Mille?",
+    "Quando nacque il Regno d'Italia?",
+]
 
 st.set_page_config(page_title="Exscribo", page_icon="📚")
 
@@ -54,24 +62,41 @@ def salva_caricati(file_caricati) -> None:
             destinazione.write_bytes(contenuto)
 
 
-def mostra_risposta(domanda: str, risposta, debug: bool) -> None:
-    st.markdown(f"**Domanda:** {domanda}")
+def usa_esempio(domanda: str) -> None:
+    """Eseguita al clic su una domanda di esempio: la scrive nella casella e la invia.
 
-    if not risposta.trovata:
-        st.warning(MESSAGGIO_NON_TROVATO, icon="🔍")
-        if debug:
-            st.caption(f"Motivo: {risposta.motivo}")
-            if risposta.testo_modello:
-                st.caption(f"Il modello aveva scritto: {risposta.testo_modello}")
-    else:
-        st.success(risposta.testo)
-        st.markdown("**Fonti** (clicca per leggere l'estratto)")
-        for fonte in risposta.fonti:
-            numeri = "".join(f"[{n}]" for n in fonte.estratti)
-            with st.expander(f"{numeri} {fonte.file}, pagina {fonte.pagina}"):
-                for numero in fonte.estratti:
-                    brano = risposta.brani[numero - 1][0]
-                    st.markdown(f"> {brano.testo}")
+    È una "callback": Streamlit la esegue prima di ridisegnare la pagina,
+    ed è l'unico momento in cui si può cambiare il contenuto di una casella.
+    """
+    st.session_state["testo_domanda"] = domanda
+    st.session_state["invia_ora"] = True
+
+
+def senza_link(testo: str) -> str:
+    """Evita che "[1]" seguito da una parentesi venga interpretato come link Markdown."""
+    return testo.replace("[", "\\[")
+
+
+def mostra_risposta(domanda: str, risposta, debug: bool) -> None:
+    with st.container(border=True):
+        st.caption(f"Domanda: {domanda}")
+
+        if not risposta.trovata:
+            st.markdown(f"#### 🔍 {MESSAGGIO_NON_TROVATO}")
+            st.caption("La risposta non è nei documenti selezionati, quindi non provo a indovinarla.")
+            if debug:
+                st.caption(f"Motivo: {risposta.motivo}")
+                if risposta.testo_modello:
+                    st.caption(f"Il modello aveva scritto: {risposta.testo_modello}")
+        else:
+            st.markdown(f"##### {senza_link(risposta.testo)}")
+            st.markdown("**Fonti** · clicca per leggere l'estratto")
+            for fonte in risposta.fonti:
+                numeri = "".join(f"[{n}]" for n in fonte.estratti)
+                with st.expander(senza_link(f"📄 {fonte.file} · pagina {fonte.pagina}   {numeri}")):
+                    for numero in fonte.estratti:
+                        brano = risposta.brani[numero - 1][0]
+                        st.markdown(f"> {brano.testo}")
 
     if debug:
         with st.expander("Debug: brani trovati e punteggi", expanded=True):
@@ -104,13 +129,13 @@ pdf = elenca_pdf([CARTELLE[nome] for nome in scelte if CARTELLE[nome].is_dir()])
 
 with st.sidebar:
     if pdf:
-        st.caption(f"{len(pdf)} PDF selezionati:")
-        st.markdown("\n".join(f"- {p.name}" for p in pdf))
+        st.caption(f"{len(pdf)} PDF selezionati")
+        st.markdown("\n".join(f"- 📄 {p.name}" for p in pdf))
 
 # --- Pagina principale ----------------------------------------------------
 
 st.title("📚 Exscribo")
-st.caption("Chiedi ai tuoi appunti: risposte basate solo sui tuoi PDF, con file e pagina.")
+st.markdown("Chiedi ai tuoi appunti: risposte basate **solo** sui tuoi PDF, con **file e pagina**.")
 
 if not pdf:
     st.info("Nessun PDF selezionato. Carica dei PDF o scegli una cartella nella barra laterale.")
@@ -132,9 +157,13 @@ with st.sidebar.expander("Dettagli indicizzazione"):
 
 # Un "form" fa partire la domanda sia con il pulsante sia premendo Invio
 with st.form("domanda"):
-    domanda = st.text_input("La tua domanda", placeholder="Es. Quali sono le fasi della mitosi?")
+    domanda = st.text_input(
+        "La tua domanda", key="testo_domanda", placeholder="Es. Quali sono le fasi della mitosi?"
+    )
     inviata = st.form_submit_button("Chiedi", type="primary")
 
+# La domanda parte anche quando si clicca un esempio (vedi usa_esempio)
+inviata = inviata or st.session_state.pop("invia_ora", False)
 if inviata and domanda.strip():
     try:
         with st.spinner("Cerco negli appunti e preparo la risposta..."):
@@ -142,6 +171,13 @@ if inviata and domanda.strip():
     except ErroreOllama as errore:
         st.error(f"Problema con Ollama: {errore}")
 
-# La risposta resta visibile anche quando cambi un'opzione (es. la modalità debug)
 if "ultima" in st.session_state:
+    # La risposta resta visibile anche quando cambi un'opzione (es. la modalità debug)
     mostra_risposta(*st.session_state["ultima"], debug=debug)
+elif ESEMPI in scelte:
+    st.caption("Oppure prova con una domanda sui PDF di esempio:")
+    for colonna, esempio in zip(st.columns(len(DOMANDE_ESEMPIO)), DOMANDE_ESEMPIO):
+        colonna.button(esempio, on_click=usa_esempio, args=(esempio,), width="stretch")
+
+st.divider()
+st.caption("🔒 Tutto in locale: i modelli girano sul tuo computer con Ollama e i tuoi PDF non lo lasciano mai.")

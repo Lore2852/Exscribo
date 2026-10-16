@@ -16,3 +16,12 @@ gatherUsageStats = false
 # Nasconde il pulsante "Deploy" (pubblicherebbe l'app su internet)
 # e le opzioni per sviluppatori nel menu.
 toolbarMode = "minimal"
+
+[theme]
+# Colori dell'interfaccia: un verde petrolio calmo al posto del rosso predefinito,
+# che a colpo d'occhio sembra un errore.
+base = "light"
+primaryColor = "#0F766E"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F1F5F9"
+textColor = "#1E293B"
